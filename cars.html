@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Cars - UGN GROUP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <img src="images/logo.png" alt="UGN GROUP" class="logo-image">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About Us</a></li>
+                <li><a href="cars.html" class="nav-link active">UGN AUTOS</a></li>
+                <li><a href="properties.html" class="nav-link">UGN HOMES</a></li>
+                <li><a href="admin.html" class="nav-link">Admin</a></li>
+            </ul>
+            <div class="contact-buttons">
+                <a href="tel:+2348109083420" class="contact-btn call-btn">
+                    <i class="fas fa-phone"></i> Call Us
+                </a>
+                    <a href="https://wa.me/2348109083420" class="contact-btn whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">Our Collection</h1>
+            <p class="page-subtitle">Discover Luxury Vehicles</p>
+        </div>
+    </section>
+
+    <section class="cars-section">
+        <div class="container">
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search by brand (e.g., Mercedes, BMW, Audi)...">
+                    <button class="search-btn" onclick="searchCars()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="clear-btn" onclick="clearSearch()">
+                        <i class="fas fa-times"></i> Clear
+                    </button>
+                </div>
+            </div>
+
+            <div id="carsGrid" class="cars-grid">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading our collection...</p>
+                </div>
+            </div>
+
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="fas fa-car-crash"></i>
+                <p>No cars found matching your search.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">UGN GROUP</h3>
+                    <p class="footer-text">Your trusted partner in luxury automotive excellence and premium real estate.</p>
+                    
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="cars.html">UGN AUTOS</a></li>
+                        <li><a href="properties.html">UGN HOMES</a></li>
+                        <li><a href="admin.html">Admin</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Contact Us</h3>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-phone"></i> +234 810 908 3420</li>
+                        <li><i class="fab fa-whatsapp"></i> +234 810 908 3420</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Abuja, Nigeria</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 UGN GROUP. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburgerBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = hamburgerBtn.querySelector('i');
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                const icon = hamburgerBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+    </script>
+    <script>
+        (function() {
+            'use strict';
+            
+            const SUPABASE_URL = 'https://enkscdyeuqnedjhawtpi.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_FzSikLnXtnXnQphBW4jGDQ_1zmH_Xx0';
+            const WHATSAPP_NUMBER = '2348109083420';
+            
+            let supabase;
+            try {
+                if (window.supabase && window.supabase.createClient) {
+                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                } else {
+                    console.error('Supabase library not loaded');
+                }
+            } catch (e) {
+                console.error('Supabase client creation error:', e);
+            }
+
+            let allCars = [];
+
+            async function loadCars() {
+                const carsGrid = document.getElementById('carsGrid');
+                const noResults = document.getElementById('noResults');
+
+                try {
+                    const { data, error } = await supabase
+                        .from('cars')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (error) throw error;
+
+                    allCars = data || [];
+
+                    if (allCars.length > 0) {
+                        displayCars(allCars);
+                    } else {
+                        carsGrid.innerHTML = `
+                            <div class="no-results">
+                                <i class="fas fa-car"></i>
+                                <p>No cars currently available. Check back soon!</p>
+                            </div>
+                        `;
+                    }
+                } catch (error) {
+                    console.error('Error loading cars:', error);
+                    carsGrid.innerHTML = `
+                        <div class="error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Failed to load cars. Please try again later.</p>
+                        </div>
+                    `;
+                }
+            }
+
+            function displayCars(cars) {
+                const carsGrid = document.getElementById('carsGrid');
+                const noResults = document.getElementById('noResults');
+
+                if (!cars || cars.length === 0) {
+                    carsGrid.innerHTML = '';
+                    noResults.style.display = 'flex';
+                    return;
+                }
+
+                noResults.style.display = 'none';
+
+                const carsHTML = cars.map(car => {
+                    const images = Array.isArray(car.image_urls) ? car.image_urls : (car.image_url ? [car.image_url] : []);
+                    const message = encodeURIComponent(
+                        `Hello UGN AUTOS, I'm interested in purchasing the ${car.name} ${car.model}.\n\n` +
+                        `Price: ₦${car.price}\n` +
+                        `Specs: ${car.specs}\n\n` +
+                        `Please provide more information about this vehicle.`
+                    );
+
+                    return `
+                        <div class="car-card" data-car-id="${car.id}">
+                            <div class="car-image-carousel">
+                                ${images.length > 0 ? `
+                                    <div class="carousel-container">
+                                        <button class="carousel-nav prev" onclick="window.prevImage('${car.id}')">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <div class="carousel-slides">
+                                            ${images.map((img, idx) => `
+                                                <img src="${img}" 
+                                                     alt="${car.name}" 
+                                                     class="carousel-slide ${idx === 0 ? 'active' : ''}"
+                                                     data-index="${idx}"
+                                                     onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+                                            `).join('')}
+                                        </div>
+                                        <button class="carousel-nav next" onclick="window.nextImage('${car.id}')">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                    ${images.length > 1 ? `
+                                        <div class="carousel-dots">
+                                            ${images.map((_, idx) => `
+                                                <span class="dot ${idx === 0 ? 'active' : ''}" 
+                                                      onclick="window.goToImage('${car.id}', ${idx})"
+                                                      data-index="${idx}"></span>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
+                                ` : `
+                                    <div class="no-image">
+                                        <i class="fas fa-car"></i>
+                                        <span>No Images</span>
+                                    </div>
+                                `}
+                            </div>
+                            <div class="car-info">
+                                <h3 class="car-name">${car.name} ${car.model}</h3>
+                                <p class="car-specs">${car.specs}</p>
+                                <div class="car-price">₦${car.price}</div>
+                                <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${message}" target="_blank" class="buy-btn">
+                                    <i class="fab fa-whatsapp"></i> Buy Now
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                carsGrid.innerHTML = carsHTML;
+
+                cars.forEach(car => {
+                    window[`carousel-${car.id}`] = {
+                        currentSlide: 0,
+                        totalSlides: (Array.isArray(car.image_urls) ? car.image_urls.length : (car.image_url ? 1 : 0))
+                    };
+                });
+            }
+
+            window.searchCars = function() {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+                
+                if (!searchTerm) {
+                    displayCars(allCars);
+                    return;
+                }
+
+                const filteredCars = allCars.filter(car => 
+                    car.name.toLowerCase().includes(searchTerm) ||
+                    car.model.toLowerCase().includes(searchTerm) ||
+                    car.specs.toLowerCase().includes(searchTerm)
+                );
+
+                displayCars(filteredCars);
+            };
+
+            window.clearSearch = function() {
+                document.getElementById('searchInput').value = '';
+                displayCars(allCars);
+            };
+
+            window.prevImage = function(carId) {
+                const carousel = window[`carousel-${carId}`];
+                if (!carousel || carousel.totalSlides <= 1) return;
+
+                const slides = document.querySelector(`.car-card[data-car-id="${carId}"] .carousel-slides`);
+                const dots = document.querySelector(`.car-card[data-car-id="${carId}"] .carousel-dots`);
+                
+                carousel.currentSlide = carousel.currentSlide - 1;
+                if (carousel.currentSlide < 0) {
+                    carousel.currentSlide = carousel.totalSlides - 1;
+                }
+
+                updateCarousel(carId, carousel.currentSlide);
+            };
+
+            window.nextImage = function(carId) {
+                const carousel = window[`carousel-${carId}`];
+                if (!carousel || carousel.totalSlides <= 1) return;
+
+                carousel.currentSlide = carousel.currentSlide + 1;
+                if (carousel.currentSlide >= carousel.totalSlides) {
+                    carousel.currentSlide = 0;
+                }
+
+                updateCarousel(carId, carousel.currentSlide);
+            };
+
+            window.goToImage = function(carId, index) {
+                const carousel = window[`carousel-${carId}`];
+                if (!carousel || index < 0 || index >= carousel.totalSlides) return;
+
+                carousel.currentSlide = index;
+                updateCarousel(carId, carousel.currentSlide);
+            };
+
+            function updateCarousel(carId, currentSlide) {
+                const carCard = document.querySelector(`.car-card[data-car-id="${carId}"]`);
+                if (!carCard) return;
+
+                const slides = carCard.querySelectorAll('.carousel-slides .carousel-slide');
+                const dots = carCard.querySelectorAll('.carousel-dots .dot');
+
+                slides.forEach((slide, idx) => {
+                    slide.classList.toggle('active', idx === currentSlide);
+                });
+
+                if (dots.length > 0) {
+                    dots.forEach((dot, idx) => {
+                        dot.classList.toggle('active', idx === currentSlide);
+                    });
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', loadCars);
+
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    window.searchCars();
+                }
+            });
+        })();
+    </script>
+
+    <style>
+        .car-image-carousel {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slides {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slides .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .carousel-slides .carousel-slide.active {
+            opacity: 1;
+            position: relative;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            z-index: 10;
+            transition: background 0.3s;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(201, 162, 39, 0.8);
+        }
+
+        .carousel-nav.prev {
+            left: 10px;
+        }
+
+        .carousel-nav.next {
+            right: 10px;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .carousel-dots .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .carousel-dots .dot:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .carousel-dots .dot.active {
+            background: #c9a227;
+            transform: scale(1.2);
+        }
+
+        .no-image {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+            color: #999;
+            gap: 10px;
+        }
+
+        .no-image i {
+            font-size: 48px;
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - UGN GROUP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <img src="images/logo.png" alt="UGN GROUP" class="logo-image">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About Us</a></li>
+                <li><a href="cars.html" class="nav-link">UGN AUTOS</a></li>
+                <li><a href="properties.html" class="nav-link">UGN HOMES</a></li>
+                <li><a href="admin.html" class="nav-link active">Admin</a></li>
+            </ul>
+            <div class="admin-actions">
+                <span class="admin-name"><i class="fas fa-user-circle"></i> Admin</span>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            <button class="hamburger" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
+            <button class="add-car-btn" id="addCarBtn">
+                <i class="fas fa-plus"></i> Add New Car
+            </button>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <i class="fas fa-car stat-icon"></i>
+                <div class="stat-info">
+                    <span class="stat-label">Total Cars</span>
+                    <span class="stat-value" id="totalCars">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-check-circle stat-icon available"></i>
+                <div class="stat-info">
+                    <span class="stat-label">Available</span>
+                    <span class="stat-value" id="availableCars">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-handshake stat-icon sold"></i>
+                <div class="stat-info">
+                    <span class="stat-label">Sold</span>
+                    <span class="stat-value" id="soldCars">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cars-table-section">
+            <div class="table-header">
+                <h2>Inventory Management</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="cars-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Car Name</th>
+                            <th>Model</th>
+                            <th>Specs</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="carsTableBody">
+                        <tr>
+                            <td colspan="7" class="loading-row">
+                                <i class="fas fa-spinner fa-spin"></i> Loading cars...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="addCarModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-plus-circle"></i> Add New Car</h2>
+                <button class="close-modal" id="closeAddModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="addCarForm" class="car-form">
+                <div class="form-group">
+                    <label>Car Name</label>
+                    <input type="text" id="carName" placeholder="e.g., Mercedes-Benz" required>
+                </div>
+                <div class="form-group">
+                    <label>Model</label>
+                    <input type="text" id="carModel" placeholder="e.g., S-Class S580" required>
+                </div>
+                <div class="form-group">
+                    <label>Car Images (5 required: Front, Back, Side, Interior, Roof)</label>
+                    <div class="image-upload-section">
+                        <div class="image-upload-item">
+                            <span class="image-label">Front View</span>
+                            <input type="file" id="carImage1" accept="image/*" required>
+                        </div>
+                        <div class="image-upload-item">
+                            <span class="image-label">Back View</span>
+                            <input type="file" id="carImage2" accept="image/*" required>
+                        </div>
+                        <div class="image-upload-item">
+                            <span class="image-label">Side View</span>
+                            <input type="file" id="carImage3" accept="image/*" required>
+                        </div>
+                        <div class="image-upload-item">
+                            <span class="image-label">Interior View</span>
+                            <input type="file" id="carImage4" accept="image/*" required>
+                        </div>
+                        <div class="image-upload-item">
+                            <span class="image-label">Roof View</span>
+                            <input type="file" id="carImage5" accept="image/*" required>
+                        </div>
+                    </div>
+                    <div id="uploadProgress" class="upload-progress" style="display:none;">
+                        <i class="fas fa-spinner fa-spin"></i> Uploading images...
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Specifications</label>
+                    <textarea id="carSpecs" rows="3" placeholder="Enter car specifications" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Price (₦)</label>
+                    <input type="number" id="carPrice" placeholder="Enter price" required>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="carStatus" required>
+                        <option value="available">Available</option>
+                        <option value="sold">Sold</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-upload"></i> Upload Car
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="editCarModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Edit Car</h2>
+                <button class="close-modal" id="closeEditModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="editCarForm" class="car-form">
+                <input type="hidden" id="editCarId">
+                <div class="form-group">
+                    <label>Car Name</label>
+                    <input type="text" id="editCarName" required>
+                </div>
+                <div class="form-group">
+                    <label>Model</label>
+                    <input type="text" id="editCarModel" required>
+                </div>
+                <div class="form-group">
+                    <label>Specifications</label>
+                    <textarea id="editCarSpecs" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Price (₦)</label>
+                    <input type="number" id="editCarPrice" required>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="editCarStatus" required>
+                        <option value="available">Available</option>
+                        <option value="sold">Sold</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i> Update Car
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="salesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fab fa-whatsapp"></i> Send Sales Details</h2>
+                <button class="close-modal" id="closeSalesModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="sales-info">
+                <p>Send sales details to <strong>+234 803 626 6161</strong> on WhatsApp</p>
+            </div>
+            <form id="salesForm" class="car-form">
+                <div class="form-group">
+                    <label>Car Name</label>
+                    <input type="text" id="salesCarName" required>
+                </div>
+                <div class="form-group">
+                    <label>Selling Price (₦)</label>
+                    <input type="number" id="salesCarPrice" required>
+                </div>
+                <div class="form-group">
+                    <label>Amount Paid by Customer (₦)</label>
+                    <input type="number" id="salesAmountPaid" required>
+                </div>
+                <button type="submit" class="submit-btn whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i> Send to WhatsApp
+                </button>
+                <button type="button" class="cancel-btn" id="cancelSalesModal">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2><i class="fas fa-exclamation-triangle"></i> Confirm Delete</h2>
+                <button class="close-modal" id="closeDeleteModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="delete-content">
+                <p>Are you sure you want to delete this car? This action cannot be undone.</p>
+                <div class="delete-buttons">
+                    <button class="cancel-btn" id="cancelDeleteModal">Cancel</button>
+                    <button class="delete-btn" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .image-upload-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .image-upload-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            border: 2px dashed #d0d0d0;
+        }
+        
+        .image-label {
+            font-weight: 600;
+            min-width: 150px;
+            color: #666;
+        }
+        
+        .image-upload-item input[type="file"] {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .image-upload-item input[type="file"]:focus {
+            outline: none;
+            border-color: #c9a227;
+        }
+        
+        .upload-progress {
+            padding: 15px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #f44336;
+        }
+    </style>
+
+    <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburgerBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = hamburgerBtn.querySelector('i');
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                const icon = hamburgerBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+    </script>
+    <script>
+        (function() {
+            'use strict';
+            
+            const SUPABASE_URL = 'https://enkscdyeuqnedjhawtpi.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_FzSikLnXtnXnQphBW4jGDQ_1zmH_Xx0';
+            const WHATSAPP_SALES_NUMBER = '2348036266161';
+            
+            let supabase;
+            try {
+                if (window.supabase && window.supabase.createClient) {
+                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    console.log('Supabase client initialized');
+                } else {
+                    alert('Error: Supabase library not loaded. Please refresh the page.');
+                }
+            } catch (e) {
+                console.error('Supabase client creation error:', e);
+            }
+            
+            let cars = [];
+            let carToDelete = null;
+
+            window.addEventListener('load', async function() {
+                const adminToken = localStorage.getItem('adminToken');
+                
+                console.log('Checking for admin token:', adminToken ? 'Found' : 'Not found');
+                
+                if (!adminToken) {
+                    console.log('No token found, redirecting to login');
+                    window.location.href = 'admin.html';
+                    return;
+                }
+
+                try {
+                    console.log('Setting session with token...');
+                    const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+                        access_token: adminToken,
+                        refresh_token: adminToken
+                    });
+                    
+                    if (sessionError) {
+                        console.error('Session error:', sessionError);
+                        localStorage.removeItem('adminToken');
+                        window.location.href = 'admin.html';
+                        return;
+                    }
+                    
+                    console.log('Session set successfully, loading cars...');
+                    loadCars();
+                } catch (error) {
+                    console.error('Authentication error:', error);
+                    localStorage.removeItem('adminToken');
+                    window.location.href = 'admin.html';
+                }
+            });
+
+            function logout() {
+                localStorage.removeItem('adminToken');
+                supabase.auth.signOut();
+                window.location.href = 'admin.html';
+            }
+
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', logout);
+            }
+
+            async function loadCars() {
+                try {
+                    console.log('Loading cars from database...');
+                    const { data, error } = await supabase
+                        .from('cars')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (error) throw error;
+
+                    console.log('Cars loaded:', data);
+                    cars = data || [];
+                    displayCars();
+                    updateStats();
+                } catch (error) {
+                    console.error('Error loading cars:', error);
+                    document.getElementById('carsTableBody').innerHTML = `
+                        <tr>
+                            <td colspan="7" class="error-row">
+                                <i class="fas fa-exclamation-triangle"></i> Error loading cars: ${error.message}
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+
+            function displayCars() {
+                const tbody = document.getElementById('carsTableBody');
+
+                if (cars.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="no-data-row">
+                                <i class="fas fa-car"></i> No cars in inventory
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = cars.map(car => {
+                    const image = Array.isArray(car.image_urls) && car.image_urls.length > 0 
+                        ? car.image_urls[0] 
+                        : (car.image_url || 'https://via.placeholder.com/100?text=No+Image');
+                    
+                    return `
+                        <tr>
+                            <td class="image-cell">
+                                <img src="${image}" 
+                                     alt="${car.name}" 
+                                     onerror="this.src='https://via.placeholder.com/100?text=No+Image'">
+                            </td>
+                            <td>${car.name}</td>
+                            <td>${car.model}</td>
+                            <td>${car.specs}</td>
+                            <td>₦${car.price}</td>
+                            <td>
+                                <span class="status-badge ${car.status === 'available' ? 'available' : 'sold'}">
+                                    ${car.status === 'available' ? 'In Stock' : 'Sold'}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="action-btn edit-btn" onclick="window.editCar('${car.id}')" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="window.deleteCar('${car.id}')" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            function updateStats() {
+                document.getElementById('totalCars').textContent = cars.length;
+                document.getElementById('availableCars').textContent = cars.filter(c => c.status === 'available').length;
+                document.getElementById('soldCars').textContent = cars.filter(c => c.status === 'sold').length;
+            }
+
+            function openModal(modalId) {
+                document.getElementById(modalId).style.display = 'block';
+            }
+
+            function closeModal(modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            }
+
+            const addCarBtn = document.getElementById('addCarBtn');
+            if (addCarBtn) {
+                addCarBtn.addEventListener('click', function() {
+                    document.getElementById('addCarForm').reset();
+                    openModal('addCarModal');
+                });
+            }
+
+            document.getElementById('closeAddModal').addEventListener('click', () => closeModal('addCarModal'));
+            document.getElementById('closeEditModal').addEventListener('click', () => closeModal('editCarModal'));
+            document.getElementById('closeSalesModal').addEventListener('click', () => closeModal('salesModal'));
+            document.getElementById('closeDeleteModal').addEventListener('click', () => closeModal('deleteModal'));
+            document.getElementById('cancelSalesModal').addEventListener('click', () => closeModal('salesModal'));
+            document.getElementById('cancelDeleteModal').addEventListener('click', () => closeModal('deleteModal'));
+
+            async function uploadImage(file, fileName) {
+                console.log(`Uploading ${fileName}...`);
+                const fileExt = file.name.split('.').pop();
+                const filePath = `${fileName}-${Date.now()}.${fileExt}`;
+                
+                const { error: uploadError } = await supabase.storage
+                    .from('car-images')
+                    .upload(filePath, file);
+
+                if (uploadError) throw uploadError;
+
+                console.log(`${fileName} uploaded successfully`);
+                
+                const { data } = supabase.storage
+                    .from('car-images')
+                    .getPublicUrl(filePath);
+
+                return data.publicUrl;
+            }
+
+            document.getElementById('addCarForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const uploadProgress = document.getElementById('uploadProgress');
+                const submitBtn = this.querySelector('.submit-btn');
+                
+                try {
+                    const image1 = document.getElementById('carImage1').files[0];
+                    const image2 = document.getElementById('carImage2').files[0];
+                    const image3 = document.getElementById('carImage3').files[0];
+                    const image4 = document.getElementById('carImage4').files[0];
+                    const image5 = document.getElementById('carImage5').files[0];
+
+                    if (!image1 || !image2 || !image3 || !image4 || !image5) {
+                        alert('Please upload all 5 images (Front, Back, Side, Interior, Roof views)');
+                        return;
+                    }
+
+                    uploadProgress.style.display = 'block';
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+
+                    console.log('Starting image uploads...');
+                    const imageUrls = await Promise.all([
+                        uploadImage(image1, 'front'),
+                        uploadImage(image2, 'back'),
+                        uploadImage(image3, 'side'),
+                        uploadImage(image4, 'interior'),
+                        uploadImage(image5, 'roof')
+                    ]);
+
+                    console.log('All images uploaded:', imageUrls);
+
+                    const carData = {
+                        name: document.getElementById('carName').value,
+                        model: document.getElementById('carModel').value,
+                        image_urls: imageUrls,
+                        specs: document.getElementById('carSpecs').value,
+                        price: document.getElementById('carPrice').value,
+                        status: document.getElementById('carStatus').value
+                    };
+
+                    console.log('Inserting car data:', carData);
+                    const { error } = await supabase.from('cars').insert([carData]);
+                    if (error) throw error;
+
+                    console.log('Car inserted successfully');
+                    closeModal('addCarModal');
+                    document.getElementById('addCarForm').reset();
+                    uploadProgress.style.display = 'none';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-upload"></i> Upload Car';
+                    loadCars();
+                } catch (error) {
+                    console.error('Error adding car:', error);
+                    alert(`Failed to add car: ${error.message}`);
+                    uploadProgress.style.display = 'none';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-upload"></i> Upload Car';
+                }
+            });
+
+            window.editCar = function(id) {
+                console.log('Editing car:', id);
+                const car = cars.find(c => c.id === id);
+                if (!car) return;
+
+                document.getElementById('editCarId').value = car.id;
+                document.getElementById('editCarName').value = car.name;
+                document.getElementById('editCarModel').value = car.model;
+                document.getElementById('editCarSpecs').value = car.specs;
+                document.getElementById('editCarPrice').value = car.price;
+                document.getElementById('editCarStatus').value = car.status;
+
+                openModal('editCarModal');
+            };
+
+            document.getElementById('editCarForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const id = document.getElementById('editCarId').value;
+                const newStatus = document.getElementById('editCarStatus').value;
+                const car = cars.find(c => c.id === id);
+
+                if (newStatus === 'sold' && car.status !== 'sold') {
+                    document.getElementById('salesCarName').value = `${car.name} ${car.model}`;
+                    document.getElementById('salesCarPrice').value = car.price;
+                    document.getElementById('editCarForm').dataset.carId = id;
+                    openModal('salesModal');
+                    return;
+                }
+
+                await updateCar();
+            });
+
+            async function updateCar() {
+                const id = document.getElementById('editCarId').value;
+                const carData = {
+                    name: document.getElementById('editCarName').value,
+                    model: document.getElementById('editCarModel').value,
+                    specs: document.getElementById('editCarSpecs').value,
+                    price: document.getElementById('editCarPrice').value,
+                    status: document.getElementById('editCarStatus').value
+                };
+
+                console.log('Updating car:', id, carData);
+
+                try {
+                    const { error } = await supabase
+                        .from('cars')
+                        .update(carData)
+                        .eq('id', id);
+
+                    if (error) throw error;
+
+                    console.log('Car updated successfully');
+                    closeModal('editCarModal');
+                    loadCars();
+                } catch (error) {
+                    console.error('Error updating car:', error);
+                    alert('Failed to update car. Please try again.');
+                }
+            }
+
+            document.getElementById('salesForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const carName = document.getElementById('salesCarName').value;
+                const carPrice = document.getElementById('salesCarPrice').value;
+                const amountPaid = document.getElementById('salesAmountPaid').value;
+
+                const message = encodeURIComponent(
+                    `SALES NOTIFICATION\n\n` +
+                    `Car: ${carName}\n` +
+                    `Selling Price: ₦${carPrice}\n` +
+                    `Amount Paid: ₦${amountPaid}\n\n` +
+                    `Please update your records accordingly.`
+                );
+
+                window.open(`https://wa.me/${WHATSAPP_SALES_NUMBER}?text=${message}`, '_blank');
+                closeModal('salesModal');
+                updateCar();
+            });
+
+            window.deleteCar = function(id) {
+                console.log('Deleting car:', id);
+                carToDelete = id;
+                openModal('deleteModal');
+            };
+
+            document.getElementById('confirmDeleteBtn').addEventListener('click', async function() {
+                if (!carToDelete) return;
+
+                try {
+                    console.log('Confirming delete:', carToDelete);
+                    const { error } = await supabase
+                        .from('cars')
+                        .delete()
+                        .eq('id', carToDelete);
+
+                    if (error) throw error;
+
+                    console.log('Car deleted successfully');
+                    closeModal('deleteModal');
+                    carToDelete = null;
+                    loadCars();
+                } catch (error) {
+                    console.error('Error deleting car:', error);
+                    alert('Failed to delete car. Please try again.');
+                }
+            });
+
+            window.onclick = function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+            };
+        })();
+    </script>
+</body>
+</html>

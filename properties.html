@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UGN Properties - UGN GROUP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .hero-carousel .carousel-overlay {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.6) 100%);
+        }
+        .property-hero-title {
+            font-size: 68px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(252, 249, 249, 0.911);
+            animation: fadeInUp 1s ease-out;
+        }
+        .property-hero-subtitle {
+            font-size: 22px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+        }
+        .properties-section {
+            padding: 100px 0;
+            background: white;
+        }
+        .properties-intro {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 80px;
+        }
+        .properties-intro h2 {
+            font-size: 48px;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+        .properties-intro p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+        }
+        .property-types {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 50px;
+            margin-bottom: 80px;
+        }
+        .property-type-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .property-type-card:hover {
+            transform: translateY(-10px);
+        }
+        .property-type-image {
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+        }
+        .property-type-content {
+            padding: 40px;
+        }
+        .property-type-content h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        .property-type-content p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .property-features {
+            list-style: none;
+            margin-top: 25px;
+        }
+        .property-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 12px;
+        }
+        .property-features i {
+            color: var(--accent);
+            font-size: 18px;
+        }
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+        .location-item {
+            background: #f8f8f8;
+            padding: 35px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .location-item:hover {
+            background: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+        .location-item i {
+            font-size: 48px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        .location-item h4 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+        .location-item p {
+            font-size: 14px;
+            color: #666;
+        }
+        .why-choose-properties {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 80px;
+        }
+        .why-choose-property-item {
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+        }
+        .why-choose-property-item i {
+            font-size: 42px;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+        .why-choose-property-item h4 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        .why-choose-property-item p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #666;
+        }
+        .contact-properties-section {
+            padding: 100px 0;
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+        }
+        .contact-properties-content h2 {
+            color: white;
+            font-size: 52px;
+            margin-bottom: 25px;
+        }
+        .contact-properties-content p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+        .contact-properties-phone {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+        .contact-properties-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 1024px) {
+            .property-types {
+                grid-template-columns: 1fr;
+            }
+            .locations-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .why-choose-properties {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            .property-hero-title {
+                font-size: 42px;
+            }
+            .property-hero-subtitle {
+                font-size: 16px;
+            }
+            .properties-intro h2 {
+                font-size: 36px;
+            }
+            .locations-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-properties-content h2 {
+                font-size: 36px;
+            }
+            .contact-properties-phone {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <img src="images/logo.png" alt="UGN GROUP" class="logo-image">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About Us</a></li>
+                <li><a href="cars.html" class="nav-link">UGN AUTOS</a></li>
+                <li><a href="properties.html" class="nav-link">UGN HOMES</a></li>
+                <li><a href="admin.html" class="nav-link">Admin</a></li>
+            </ul>
+            <div class="contact-buttons">
+                <a href="tel:+2348109083420" class="contact-btn call-btn">
+                    <i class="fas fa-phone"></i> Call Us
+                </a>
+                    <a href="https://wa.me/2348109083420" class="contact-btn whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+            </div>
+            <button class="hamburger" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="hero-carousel">
+        <div class="carousel-track">
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1920')"></div>
+        </div>
+        <div class="carousel-overlay">
+            <h1 class="property-hero-title">UGN Properties</h1>
+            <p class="property-hero-subtitle">Premium Houses & Lands in Abuja</p>
+            <a href="#contact" class="cta-button">Contact Us Today</a>
+        </div>
+        <div class="carousel-dots"></div>
+    </div>
+
+    <section class="properties-section">
+        <div class="container">
+            <div class="properties-intro">
+                <h2>Discover Prime Real Estate in Abuja</h2>
+                <p>
+                    Welcome to UGN Properties, your trusted partner in finding the perfect property in Nigeria's capital city. 
+                    We specialize in premium residential and commercial properties, offering a diverse portfolio of houses 
+                    and lands in Abuja's most sought-after locations. Whether you're looking to build your dream home, 
+                    invest in prime real estate, or secure commercial space, we have the expertise and inventory to meet your needs.
+                </p>
+            </div>
+
+            <div class="property-types">
+                <div class="property-type-card">
+                    <div class="property-type-image" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800')"></div>
+                    <div class="property-type-content">
+                        <h3>Luxury Houses</h3>
+                        <p>
+                            Discover our exclusive collection of luxury houses ranging from elegant duplexes to expansive mansions. 
+                            Our properties feature modern architecture, premium finishes, and are located in secure, well-serviced 
+                            neighborhoods across Abuja.
+                        </p>
+                        <ul class="property-features">
+                            <li><i class="fas fa-check"></i> 4-7 bedroom luxury homes</li>
+                            <li><i class="fas fa-check"></i> Modern architectural designs</li>
+                            <li><i class="fas fa-check"></i> Prime locations in Maitama, Asokoro, Wuse</li>
+                            <li><i class="fas fa-check"></i> 24/7 security and gated communities</li>
+                            <li><i class="fas fa-check"></i> Backup power and water supply</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="property-type-card">
+                    <div class="property-type-image" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800')"></div>
+                    <div class="property-type-content">
+                        <h3>Premium Lands</h3>
+                        <p>
+                            Invest in prime plots of land in Abuja's fastest-growing developments. We offer verified lands with 
+                            genuine documentation, perfect for residential development or commercial investment. Build your 
+                            vision on solid ground with UGN Properties.
+                        </p>
+                        <ul class="property-features">
+                            <li><i class="fas fa-check"></i> 500sqm to 2000sqm plots available</li>
+                            <li><i class="fas fa-check"></i> Verified C of O and R of O titles</li>
+                            <li><i class="fas fa-check"></i> Developing estates with infrastructure</li>
+                            <li><i class="fas fa-check"></i> Strategic locations with high ROI potential</li>
+                            <li><i class="fas fa-check"></i> Flexible payment plans available</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="locations-section">
+                <h2 class="section-title text-center">Prime Locations in Abuja</h2>
+                <div class="locations-grid">
+                    <div class="location-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h4>Maitama District</h4>
+                        <p>Exclusive residential area with diplomatic missions and high-end properties</p>
+                    </div>
+                    <div class="location-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h4>Asokoro</h4>
+                        <p>Prestigious neighborhood known for luxury estates and government officials</p>
+                    </div>
+                    <div class="location-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h4>Wuse II</h4>
+                        <p>Commercial and residential hub with excellent amenities</p>
+                    </div>
+                    <div class="location-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h4>Guzape</h4>
+                        <p>Emerging upscale area with stunning views and modern developments</p>
+                    </div>
+                    <div class="location-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h4>Katampe</h4>
+                        <p>Peaceful residential area with growing infrastructure</p>
+                    </div>
+                    <div class="location-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h4>Lokogoma</h4>
+                        <p>Fast-developing district with affordable luxury options</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="why-choose-section">
+                <h2 class="section-title text-center">Why Choose UGN Properties?</h2>
+                <div class="why-choose-properties">
+                    <div class="why-choose-property-item">
+                        <i class="fas fa-certificate"></i>
+                        <div>
+                            <h4>Genuine Documentation</h4>
+                            <p>All our properties come with verified titles and proper documentation. We ensure every transaction is transparent and legally sound.</p>
+                        </div>
+                    </div>
+                    <div class="why-choose-property-item">
+                        <i class="fas fa-eye"></i>
+                        <div>
+                            <h4>Expert Property Inspection</h4>
+                            <p>Our team conducts thorough inspections of every property, providing you with detailed reports and peace of mind.</p>
+                        </div>
+                    </div>
+                    <div class="why-choose-property-item">
+                        <i class="fas fa-handshake"></i>
+                        <div>
+                            <h4>Trusted Reputation</h4>
+                            <p>With years of experience in Abuja's real estate market, we've built a reputation for integrity and excellence.</p>
+                        </div>
+                    </div>
+                    <div class="why-choose-property-item">
+                        <i class="fas fa-headset"></i>
+                        <div>
+                            <h4>Dedicated Support</h4>
+                            <p>From property search to closing, our dedicated team provides personalized service every step of the way.</p>
+                        </div>
+                    </div>
+                    <div class="why-choose-property-item">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <h4>Investment Guidance</h4>
+                            <p>We provide expert advice on property investment opportunities with high potential returns in Abuja.</p>
+                        </div>
+                    </div>
+                    <div class="why-choose-property-item">
+                        <i class="fas fa-dollar-sign"></i>
+                        <div>
+                            <h4>Flexible Payment</h4>
+                            <p>Enjoy flexible payment plans tailored to your budget. We make property ownership accessible and convenient.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-properties-section" id="contact">
+        <div class="container">
+            <div class="contact-properties-content">
+                <h2>Let's Discuss the Property You Need</h2>
+                <p>Ready to find your dream home or invest in prime land? Contact us today and let our experts help you discover the perfect property.</p>
+                
+                <div class="contact-properties-buttons">
+                    <a href="tel:+2348109083420" class="cta-button">
+                        <i class="fas fa-phone"></i> Call Us Now
+                    </a>
+                    <a href="https://wa.me/2348109083420" class="cta-button whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">UGN GROUP</h3>
+                    
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="cars.html">UGN AUTOS</a></li>
+                        <li><a href="properties.html">UGN HOMES</a></li>
+                        <li><a href="admin.html">Admin</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Contact Us</h3>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-phone"></i> +234 810 908 3420</li>
+                        <li><i class="fab fa-whatsapp"></i> +234 810 908 3420</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Abuja, Nigeria</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 UGN GROUP. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/carousel.js"></script>
+    <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburgerBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = hamburgerBtn.querySelector('i');
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                const icon = hamburgerBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+    </script>
+</body>
+</html>
