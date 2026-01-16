@@ -66,7 +66,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 60px;
     object-fit: contain;
     /* REMOVE the negative margin */
-    margin-right: 0; /* Changed from -108px */
+    margin-right: -108px; /* Changed from -108px */
 }
 
 .logo-text {
@@ -1488,13 +1488,17 @@ h1, h2, h3, h4, h5, h6 {
         height: 50px;
         width: 50px;
         /* Remove the negative margin here too */
-        margin-right: 0; /* Changed from -108px */
+        margin-right: 100px; /* Changed from -108px */
     }
 
      .logo-brand {
         font-size: 22px; /* Slightly smaller on mobile */
-        margin-left: 150;
+        margin-left: -208px;
     }
+
+    
+
+    
 
     .nav-menu {
         display: none;
