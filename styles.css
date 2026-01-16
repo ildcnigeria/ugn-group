@@ -1491,9 +1491,9 @@ h1, h2, h3, h4, h5, h6 {
         margin-right: 100px; /* Changed from -108px */
     }
 
-     .logo-brand {
+     .logo-text {
         font-size: 22px; /* Slightly smaller on mobile */
-        margin-left: -208px;
+        margin-right: 198px;
     }
 
     
