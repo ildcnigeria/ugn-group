@@ -1488,7 +1488,7 @@ h1, h2, h3, h4, h5, h6 {
         height: 50px;
         width: 50px;
         /* Remove the negative margin here too */
-        margin-right: 100px; /* Changed from -108px */
+        margin-right: 5px; /* Changed from -108px */
     }
 
      .logo-text {
@@ -1503,7 +1503,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .logo-tagline {
-        font-size: 8px; /* Slightly smaller on mobile */
+        font-size: 10px; /* Slightly smaller on mobile */
         margin-right: 528px;
     }
 
