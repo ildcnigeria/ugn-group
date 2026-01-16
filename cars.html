@@ -12,23 +12,26 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="logo-link">
-                <img src="images/logo.png" alt="UGN GROUP" class="logo-image">
+            
+                <img src="images/logos.jpg" alt="UGN GROUP" class="logo-image">
+                <div class="logo-text">
+                    <span class="logo-brand">UGN GROUP</span>
+                    <span class="logo-tagline">Premium Assets, Timeless Value</span>
+                </div>
             </a>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="about.html" class="nav-link">About Us</a></li>
                 <li><a href="cars.html" class="nav-link active">UGN AUTOS</a></li>
                 <li><a href="properties.html" class="nav-link">UGN HOMES</a></li>
+                <li><a href="https://ugoildcglobal.com" class="nav-link">ILDC NGO</a></li>
                 <li><a href="admin.html" class="nav-link">Admin</a></li>
             </ul>
             <div class="contact-buttons">
                 <a href="tel:+2348109083420" class="contact-btn call-btn">
                     <i class="fas fa-phone"></i> Call Us
                 </a>
-                    <a href="https://wa.me/2348109083420" class="contact-btn whatsapp-btn">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </a>
+                    
             </div>
             <button class="hamburger" id="hamburgerBtn">
                 <i class="fas fa-bars"></i>
@@ -36,11 +39,20 @@
         </div>
     </nav>
 
-    <section class="page-header">
-        <div class="header-content">
-            <h1 class="page-title">Our Collection</h1>
-            <p class="page-subtitle">Discover Luxury Vehicles</p>
+
+    <section class="hero-carousel cars-hero">
+        <div class="carousel-track">
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1617788138017-80ad40651399?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1616422285623-13ff0162193c?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1536700503339-1e4b06520771?w=1920')"></div>
+            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=1920')"></div>
         </div>
+        <div class="carousel-overlay">
+            <h1 class="hero-title">UGN AUTOS</h1>
+            <p class="hero-subtitle">Premium Electric Vehicles</p>
+        </div>
+        <div class="carousel-dots"></div>
     </section>
 
     <section class="cars-section">
@@ -86,6 +98,7 @@
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="cars.html">UGN AUTOS</a></li>
                         <li><a href="properties.html">UGN HOMES</a></li>
+                        <li><a href="https://ugoildcglobal.com" class="nav-link">ILDC NGO</a></li>
                         <li><a href="admin.html">Admin</a></li>
                     </ul>
                 </div>
@@ -94,7 +107,9 @@
                     <ul class="footer-contact">
                         <li><i class="fas fa-phone"></i> +234 810 908 3420</li>
                         <li><i class="fab fa-whatsapp"></i> +234 810 908 3420</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Abuja, Nigeria</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 2 Kabiru A. Yusuf Street, Beside Anan House, Mabushi District, Abuja</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Jinifa Plaza Plot 1014, Samuel Ademulegun Street, Central Business District</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 15 David Ejoor Crescent, Gudu, Abuja</li>
                     </ul>
                 </div>
             </div>
@@ -105,6 +120,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/carousel.js"></script>
     <script>
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const navMenu = document.querySelector('.nav-menu');

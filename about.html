@@ -11,23 +11,26 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="logo-link">
-                <img src="images/logo.png" alt="UGN GROUP" class="logo-image">
+            
+                <img src="images/logos.jpg" alt="UGN GROUP" class="logo-image">
+                <div class="logo-text">
+                    <span class="logo-brand">UGN GROUP</span>
+                    <span class="logo-tagline">Premium Assets, Timeless Value</span>
+                </div>
             </a>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="about.html" class="nav-link active">About Us</a></li>
                 <li><a href="cars.html" class="nav-link">UGN AUTOS</a></li>
                 <li><a href="properties.html" class="nav-link">UGN HOMES</a></li>
+                <li><a href="https://ugoildcglobal.com" class="nav-link">ILDC NGO</a></li>
                 <li><a href="admin.html" class="nav-link">Admin</a></li>
             </ul>
             <div class="contact-buttons">
                 <a href="tel:+2348109083420" class="contact-btn call-btn">
                     <i class="fas fa-phone"></i> Call Us
                 </a>
-                    <a href="https://wa.me/2348109083420" class="contact-btn whatsapp-btn">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </a>
+                    
             </div>
             <button class="hamburger" id="hamburgerBtn">
                 <i class="fas fa-bars"></i>
@@ -35,10 +38,14 @@
         </div>
     </nav>
 
-    <section class="page-header">
-        <div class="header-content">
-            <h1 class="page-title">About Us</h1>
-            <p class="page-subtitle">Learn More About UGN GROUP</p>
+
+    <section class="hero-video">
+        <video autoplay muted loop playsinline>
+            <source src="images/vid1.mp4" type="video/mp4">
+        </video>
+        <div class="carousel-overlay">
+            <h1 class="hero-title">UGN AUTOS</h1>
+            <p class="hero-subtitle">Luxury Electric Vehicles</p>
         </div>
     </section>
 
@@ -60,7 +67,9 @@
                     </p>
                 </div>
                 <div class="about-hero-image">
-                    <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800" alt="About UGN AUTOS">
+                    <video autoplay muted loop playsinline>
+                        <source src="images/vid2.mp4" type="video/mp4">
+                    </video>
                 </div>
             </div>
         </div>
@@ -235,6 +244,7 @@
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="cars.html">UGN AUTOS</a></li>
                         <li><a href="properties.html">UGN HOMES</a></li>
+                        <li><a href="https://ugoildcglobal.com" class="nav-link">ILDC NGO</a></li>
                         <li><a href="admin.html">Admin</a></li>
                     </ul>
                 </div>
@@ -243,7 +253,9 @@
                     <ul class="footer-contact">
                         <li><i class="fas fa-phone"></i> +234 810 908 3420</li>
                         <li><i class="fab fa-whatsapp"></i> +234 810 908 3420</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Abuja, Nigeria</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 2 Kabiru A. Yusuf Street, Beside Anan House, Mabushi District, Abuja</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Jinifa Plaza Plot 1014, Samuel Ademulegun Street, Central Business District</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 15 David Ejoor Crescent, Gudu, Abuja</li>
                     </ul>
                 </div>
             </div>
@@ -254,6 +266,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/carousel.js"></script>
     <script src="js/app.js"></script>
     <script>
         const hamburgerBtn = document.getElementById('hamburgerBtn');
